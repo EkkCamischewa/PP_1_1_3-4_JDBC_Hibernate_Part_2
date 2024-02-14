@@ -9,13 +9,15 @@ public class Util {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "1234";
 
-    public static Connection getConnection(){
+    public static Connection getConnection() {
         Connection connection = null;
+
         try {
-            connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
-            System.err.println("Error drivers");
+            System.err.println("Ошибка соединения -- Util");
         }
-        return  connection;
+
+        return connection;
     }
 }
