@@ -20,6 +20,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private final static String INSERT_USER = "INSERT INTO users (name,last_name,age) VALUE (?,?,?);";
 
     private final static String GET_USERS = "SELECT * FROM users";
+    private final static String DELETE_USER = "DELETE FROM users WHERE id=?";
 
     public UserDaoJDBCImpl() {
 
@@ -53,6 +54,15 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
+        try(Connection connection = Util.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER)) {
+
+            preparedStatement.setLong(1,id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Ошибка удаления User");;
+        }
+
 
     }
 
@@ -62,6 +72,7 @@ public class UserDaoJDBCImpl implements UserDao {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USERS)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
+
             long id = 0L;
             while (resultSet.next()){
                 User userAdd = new User(resultSet.getString("name"),resultSet.getString("last_name"),resultSet.getByte("age"));
